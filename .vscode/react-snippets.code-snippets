@@ -1,0 +1,16 @@
+{
+  "React arrow component (div)": {
+    "scope": "javascriptreact,typescriptreact",
+    "prefix": "raf",
+    "body": [
+      "const ${1:funtion} = () => {",
+      "  return (",
+      "    <div></div>",
+      "  );",
+      "};",
+      "",
+      "export default $1;"
+    ],
+    "description": "Arrow function component returning a div"
+  }
+}
