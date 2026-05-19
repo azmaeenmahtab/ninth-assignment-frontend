@@ -24,7 +24,7 @@ const LoginIndex = () => {
     const email = values.email;
     const password = values.password
 
-    if(!email || !password){
+    if (!email || !password) {
       setFormError("Email and Password are required!")
       return;
     }
@@ -43,13 +43,13 @@ const LoginIndex = () => {
       // console.log(data)
 
       router.push("/home")
-    }catch(error){
+    } catch (error) {
       setFormError('Sign in failed. Please try again.')
       console.log(error)
     }
-  
 
-    
+
+
   }
   return (
     <section className="px-4 py-10">
@@ -65,13 +65,13 @@ const LoginIndex = () => {
             <form className="mt-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <input
-                type='email'
+                  type='email'
                   name="email"
                   placeholder="Email"
                   className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#7a1633]"
                 />
                 <input
-                name='password'
+                  name='password'
                   type="password"
                   placeholder="Password"
                   className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#7a1633]"
@@ -82,15 +82,32 @@ const LoginIndex = () => {
                 Sign In
               </button>
 
-              
+
             </form>
             <button
-                type="button"
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700"
-              >
-                <Image src={googleIcon} alt="Google" width={18} height={18} />
-                Sign in with Google
-              </button>
+              type="button"
+              onClick={async () => {
+                setFormError("")
+                try {
+                  const { data, error } = await authClient.signIn.social({
+                    provider: "google",
+                  });
+                  if (error) {
+                    setFormError(
+                      error.message || "Google login failed."
+                    );
+                  }
+                  console.log(data)
+                } catch (error) {
+                  setFormError('Google sign-in failed. Please try again.');
+                  console.log(error);
+                }
+              }}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700"
+            >
+              <Image src={googleIcon} alt="Google" width={18} height={18} />
+              Sign in with Google
+            </button>
 
 
           </div>
