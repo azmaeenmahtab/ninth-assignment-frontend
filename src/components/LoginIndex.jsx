@@ -8,12 +8,39 @@ import googleIcon from '@/assets/google.png'
 import Link from 'next/link'
 import { authClient } from '@/lib/auth-client'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/navigation'
+import cancleicon from "@/assets/cancel.png"
 
 
 const LoginIndex = () => {
   const router = useRouter()
   const [formError, setFormError] = useState("")
+
+  // Custom error toast function
+  const showErrorToast = (msg) =>
+    toast.error(msg, {
+      position: 'top-center',
+      style: {
+        background: '#651028',
+        color: '#fff',
+        borderRadius: '1rem',
+        fontWeight: 600,
+        fontSize: '1rem',
+        boxShadow: '0 2px 8px rgba(75,15,29,0.15)'
+      },
+      icon: {cancleicon},
+      autoClose: 3000,
+      hideProgressBar: true,
+    })
+
+  const getErrorMessage = (err, fallback) => {
+    if (!err) return fallback
+    if (typeof err === 'string') return err
+    if (typeof err?.message === 'string') return err.message
+    return fallback
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +52,9 @@ const LoginIndex = () => {
     const password = values.password
 
     if (!email || !password) {
-      setFormError("Email and Password are required!")
+      const msg = "Email and Password are required!"
+      setFormError(msg)
+      showErrorToast(msg)
       return;
     }
 
@@ -35,16 +64,27 @@ const LoginIndex = () => {
         password: password, // required
       });
 
-      if (error) {
-        setFormError(error || 'Sign up failed. Please try again.')
-        console.log(error)
+      const signInError = error || data?.error
+      if (signInError) {
+        const msg = getErrorMessage(signInError, 'Sign in failed. Please try again.')
+        setFormError(msg)
+        showErrorToast(msg)
+        console.log(signInError)
         return
       }
-      // console.log(data)
+
+      if (!data?.user) {
+        const msg = 'Invalid email or password.'
+        setFormError(msg)
+        showErrorToast(msg)
+        return
+      }
 
       router.push("/home")
     } catch (error) {
-      setFormError('Sign in failed. Please try again.')
+      const msg = 'Sign in failed. Please try again.'
+      setFormError(msg)
+      showErrorToast(msg)
       console.log(error)
     }
 
@@ -93,13 +133,15 @@ const LoginIndex = () => {
                     provider: "google",
                   });
                   if (error) {
-                    setFormError(
-                      error.message || "Google login failed."
-                    );
+                    const msg = getErrorMessage(error, "Google login failed.")
+                    setFormError(msg)
+                    showErrorToast(msg)
                   }
                   console.log(data)
                 } catch (error) {
-                  setFormError('Google sign-in failed. Please try again.');
+                  const msg = 'Google sign-in failed. Please try again.'
+                  setFormError(msg)
+                  showErrorToast(msg)
                   console.log(error);
                 }
               }}
@@ -134,6 +176,7 @@ const LoginIndex = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </section>
   )
 }

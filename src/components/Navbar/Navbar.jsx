@@ -14,7 +14,7 @@ const Navbar = () => {
   const userInitial = userName?.trim()?.[0]?.toUpperCase() || 'U'
   
   return (
-    <header className="w-full border-gray-200 bg-white">
+    <header className="w-full   bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <Link href="/home" className="flex items-center gap-2">
           <Image src={mainLogo} alt="Main logo" width={200} height={40} priority />
@@ -27,12 +27,12 @@ const Navbar = () => {
           <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/pets">
             All Pets
           </Link>
-          <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/requests">
+          {/* <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/requests">
             My Requests
           </Link>
           <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/add-pet">
             Add Pet
-          </Link>
+          </Link> */}
         </nav>
 
         {session?.user ? (
