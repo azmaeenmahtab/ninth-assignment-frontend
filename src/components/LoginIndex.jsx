@@ -3,7 +3,7 @@ import Image from 'next/image'
 import logo from '@/assets/mainlogo.png'
 import loginpagecat from "@/assets/loginpagecat.png"
 import googleIcon from '@/assets/google.png'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 const LoginIndex = () => {
   return (
@@ -45,9 +45,12 @@ const LoginIndex = () => {
           <div className="relative bg-gradient-to-b from-[#4b0f1d] via-[#651028] to-[#7a1633] text-white pt-10">
             <div className='text-center'>
                 <h1>Don&apos;t have a account?</h1>
-                <button className="mt-6 w-50% rounded-full bg-white text-[#7a1633] px-5 py-3 text-sm font-semibold ">
-              Sign Up
-            </button>
+                <Link
+                  href="/auth/signup"
+                  className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#7a1633]"
+                >
+                  Sign Up
+                </Link>
              </div>
             <div className="relative mx-auto w-full max-w-md">
               <Image
