@@ -5,8 +5,8 @@ import mainLogo from '@/assets/mainlogo.png'
 
 const Navbar = () => {
   return (
-    <header className="w-full border-b border-gray-200 bg-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+    <header className="w-full border-gray-200 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         <Link href="/home" className="flex items-center gap-2">
           <Image src={mainLogo} alt="Main logo" width={200} height={40} priority />
         </Link>
@@ -27,7 +27,7 @@ const Navbar = () => {
         </nav>
 
         <Link
-          href="/login"
+          href="/auth/login"
           className="rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-gray-400"
         >
           Log In
