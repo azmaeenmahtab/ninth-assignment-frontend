@@ -3,9 +3,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSession } from '@/lib/auth-client'
+import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
 
 const MyListingsPage = () => {
   const { data: session } = useSession()
+  const { openModal } = useRequestsModal()
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -85,7 +87,13 @@ const MyListingsPage = () => {
                     {pet?.breed || 'Mixed Breed'} · {pet?.age || 'N/A'}
                   </p>
                   <div className="mt-4 grid grid-cols-2 gap-2">
-                    <button className="rounded-full border border-gray-200 px-3 py-2 text-[11px] font-semibold text-[#651028]">Requests</button>
+                    <button
+                      type="button"
+                      onClick={() => openModal(pet?._id, pet?.petName)}
+                      className="rounded-full border border-gray-200 px-3 py-2 text-[11px] font-semibold text-[#651028]"
+                    >
+                      Requests
+                    </button>
                     <button className="rounded-full border border-gray-200 px-3 py-2 text-[11px] font-semibold text-[#651028]">View</button>
                     <button className="rounded-full bg-[#651028] px-3 py-2 text-[11px] font-semibold text-white">Edit</button>
                     <button className="rounded-full border border-[#651028] px-3 py-2 text-[11px] font-semibold text-[#651028]">Delete</button>

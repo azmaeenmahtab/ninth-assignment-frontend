@@ -6,6 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import mainLogo from '@/assets/mainlogo.png'
 import { useSession } from '@/lib/auth-client'
+import { RequestsModalProvider } from '@/lib/contexts/requestsmodalcontext'
+import RequestsModal from '@/components/modals/requestsmodal'
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession()
@@ -19,6 +21,7 @@ const DashboardLayout = ({ children }) => {
   const pathname = usePathname()
 
   return (
+    <RequestsModalProvider>
     <div className="min-h-screen bg-white text-(--text)">
       <header className="sticky top-0 z-40 w-full bg-white backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -93,7 +96,9 @@ const DashboardLayout = ({ children }) => {
           </div>
         </section>
       </main>
+      <RequestsModal />
     </div>
+    </RequestsModalProvider>
   )
 }
 
