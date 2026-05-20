@@ -1,14 +1,20 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useSession } from '@/lib/auth-client'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { showErrorToast, showSuccessToast } from '@/lib/toast'
 
 const PetDetailPage = () => {
 	const { detail } = useParams()
+	const router = useRouter()
 	const { data: session } = useSession()
 	const [pet, setPet] = useState(null)
 	const [loading, setLoading] = useState(true)
+	const [submitting, setSubmitting] = useState(false)
 
 	useEffect(() => {
 		if (!detail) return
@@ -28,6 +34,56 @@ const PetDetailPage = () => {
 		loadPet()
 	}, [detail])
 
+	const handleRequest = async (e) => {
+		e.preventDefault()
+		if (!pet?._id) return
+
+		const userId = session?.user?.id
+		const ownerId = pet?.userId
+		if (!userId) {
+			showErrorToast('Please log in to request adoption.')
+			return
+		}
+
+		if (ownerId && userId === ownerId) {
+			showErrorToast('Owner cannot request for adoption.')
+			return
+		}
+
+		const formData = new FormData(e.currentTarget)
+		const payload = {
+			petId: pet?._id,
+			petName: pet?.petName || '',
+			petImageSrc: pet?.imageSrc || '',
+			userId,
+			ownerId: ownerId || '',
+			userName: session?.user?.name || '',
+			userEmail: session?.user?.email || '',
+			pickupDate: formData.get('pickupDate') || '',
+			message: formData.get('message') || ''
+		}
+
+		try {
+			setSubmitting(true)
+			const res = await fetch('http://localhost:5000/request-adoption', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			})
+			const data = await res.json()
+			if (!res.ok) {
+				showErrorToast(data?.message || 'Failed to submit request.')
+				return
+			}
+			showSuccessToast('Adoption request submitted.')
+			router.push('/dashboard/my-requests')
+		} catch (error) {
+			showErrorToast('Error submitting request.')
+		} finally {
+			setSubmitting(false)
+		}
+	}
+
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-white px-6 py-10">
@@ -37,18 +93,22 @@ const PetDetailPage = () => {
 	}
 
 	return (
+		<>
 		<div className="min-h-screen bg-[#f2e4d1] px-6 py-10 max-w-7xl mx-auto rounded-2xl">
 			<div className="mx-auto max-w-6xl">
 				<div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
 					{/* Left: Pet showcase */}
 					<div>
 						<div className="overflow-hidden rounded-[36px] bg-[#651028] p-6">
-							<div className="overflow-hidden rounded-[28px] bg-white">
+							<div className="relative overflow-hidden rounded-[28px] bg-white">
 								<img
 									src={pet?.imageSrc}
 									alt={pet?.petName || 'Pet'}
 									className="h-90 w-full object-cover"
 								/>
+								<span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold text-[#651028]">
+									Available
+								</span>
 							</div>
 							<div className="mt-4 grid grid-cols-3 gap-3 rounded-2xl bg-white px-4 py-3 text-center">
 								<div>
@@ -108,7 +168,7 @@ const PetDetailPage = () => {
 							<h2 className="text-xl font-semibold text-[#651028] text-center">Adopt {pet?.petName || 'this pet'}</h2>
 							<p className="mt-1 text-center text-xs text-gray-500">Begin your journey with your new best friend.</p>
 
-							<form className="mt-6 space-y-4">
+							<form className="mt-6 space-y-4" onSubmit={handleRequest}>
 								<div className="grid grid-cols-2 gap-3">
 									<div>
 										<label className="text-xs font-semibold text-gray-500">Pet Name</label>
@@ -144,6 +204,7 @@ const PetDetailPage = () => {
 									<label className="text-xs font-semibold text-gray-500">Desired Pickup Date</label>
 									<input
 										type="date"
+										name="pickupDate"
 										className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-xs outline-none focus:border-[#651028]"
 									/>
 								</div>
@@ -152,6 +213,7 @@ const PetDetailPage = () => {
 									<label className="text-xs font-semibold text-gray-500">Why do you want to adopt {pet?.petName || 'this pet'}?</label>
 									<textarea
 										rows={4}
+										name="message"
 										placeholder="Tell us about your home and why you'd be a great fit..."
 										className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-xs outline-none focus:border-[#651028]"
 									/>
@@ -160,8 +222,9 @@ const PetDetailPage = () => {
 								<button
 									type="submit"
 									className="mt-2 w-full rounded-full bg-[#651028] py-2 text-xs font-semibold text-white"
+									disabled={submitting}
 								>
-									Submit Adoption Request
+									{submitting ? 'Submitting...' : 'Submit Adoption Request'}
 								</button>
 							</form>
 
@@ -176,6 +239,8 @@ const PetDetailPage = () => {
 				</div>
 			</div>
 		</div>
+		<ToastContainer />
+		</>
 	)
 }
 

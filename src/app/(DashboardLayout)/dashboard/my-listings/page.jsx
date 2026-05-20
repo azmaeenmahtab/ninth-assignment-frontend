@@ -31,8 +31,8 @@ const MyListingsPage = () => {
   const stats = useMemo(() => {
     const total = listings.length
     const adopted = listings.filter((pet) => pet?.adoptionStatus === 'adopted').length
-    const available = listings.filter((pet) => pet?.adoptionStatus === 'available').length
     const pending = listings.filter((pet) => pet?.adoptionStatus === 'pending').length
+    const available = total - adopted - pending
     return { total, available, adopted, pending }
   }, [listings])
 
