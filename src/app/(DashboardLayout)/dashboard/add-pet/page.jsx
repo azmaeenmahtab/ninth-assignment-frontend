@@ -116,7 +116,7 @@ const AddPet = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Owner Email (Auto-filled)</label>
-                <input type="email" name="ownerEmail" value="mahtabmaazen7@gmail.com" readOnly className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm bg-gray-100 text-gray-500 outline-none" />
+                <input type="email" name="ownerEmail" value={session?.user?.email || ''} readOnly className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm bg-gray-100 text-gray-500 outline-none" />
               </div>
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

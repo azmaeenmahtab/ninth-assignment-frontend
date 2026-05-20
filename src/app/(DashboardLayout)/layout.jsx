@@ -49,7 +49,7 @@ const DashboardLayout = ({ children }) => {
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-6 pb-6">
-        <section className="rounded-2xl bg-[#efe7dd] px-6 py-8">
+        <section className="rounded-2xl bg-[#f3e8d5] px-6 py-8">
           <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
             <aside className="flex flex-col gap-3">
               <Link
@@ -87,7 +87,7 @@ const DashboardLayout = ({ children }) => {
               </Link>
             </aside>
 
-            <div className="min-h-[420px]">
+            <div className="min-h-screen">
               {children}
             </div>
           </div>
