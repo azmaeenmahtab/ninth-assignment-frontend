@@ -1,7 +1,42 @@
 
+"use client";
 import React from 'react';
+import { useSession } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 const AddPet = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("user session:", session);
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    // Checkbox handling (vaccinationStatus)
+    data.vaccinationStatus = formData.get('vaccinationStatus') === 'on';
+    // Add userId from session
+    data.userId = session?.user?.id || null;
+    console.log("form data to submit:", data);
+
+    try {
+      const res = await fetch('http://localhost:5000/add-pet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        // Optionally redirect or show success
+        router.push('/dashboard/my-listings');
+      } else {
+        // Optionally handle error
+        alert('Failed to add pet.');
+      }
+    } catch (err) {
+      alert('Error submitting form.');
+    }
+  };
+
   return (
     <div className="min-h-screen px-2 flex justify-center">
       <div className="w-full max-w-5xl bg-white rounded-3xl shadow-md p-8">
@@ -10,7 +45,7 @@ const AddPet = () => {
         <p className="text-sm text-gray-500 mb-6">Help a furry friend find their forever home.</p>
 
         {/* Form */}
-        <form className="space-y-8">
+        <form className="space-y-8" onSubmit={handleSubmit}>
           {/* Pet Details */}
           <div>
             <h2 className="text-lg font-semibold text-[#651028] mb-4">Pet Details</h2>

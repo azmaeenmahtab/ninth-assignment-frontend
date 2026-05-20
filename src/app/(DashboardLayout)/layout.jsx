@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import mainLogo from '@/assets/mainlogo.png'
@@ -14,6 +15,8 @@ const DashboardLayout = ({ children }) => {
   const userImage = session?.user?.image
   const isValidImageUrl = typeof userImage === 'string' && /^https?:\/\//.test(userImage)
   const userInitial = firstName?.[0]?.toUpperCase() || 'U'
+
+  const pathname = usePathname()
 
   return (
     <div className="min-h-screen bg-white text-(--text)">
@@ -51,19 +54,34 @@ const DashboardLayout = ({ children }) => {
             <aside className="flex flex-col gap-3">
               <Link
                 href="/dashboard/my-requests"
-                className="rounded-full bg-[#651028] px-4 py-3 text-sm font-semibold text-white shadow-sm"
+                className={
+                  `rounded-full px-4 py-3 text-sm font-semibold shadow-sm ` +
+                  (pathname === '/dashboard/my-requests'
+                    ? 'bg-[#651028] text-white'
+                    : 'border border-[#f1496b]/20 bg-white text-(--text)')
+                }
               >
                 My Requests
               </Link>
               <Link
                 href="/dashboard/add-pet"
-                className="rounded-full border border-[#f1496b]/20 bg-white px-4 py-3 text-sm font-semibold text-(--text)"
+                className={
+                  `rounded-full px-4 py-3 text-sm font-semibold shadow-sm ` +
+                  (pathname === '/dashboard/add-pet'
+                    ? 'bg-[#651028] text-white'
+                    : 'border border-[#f1496b]/20 bg-white text-(--text)')
+                }
               >
                 Add Pet
               </Link>
               <Link
                 href="/dashboard/my-listings"
-                className="rounded-full border border-[#f1496b]/20 bg-white px-4 py-3 text-sm font-semibold text-(--text)"
+                className={
+                  `rounded-full px-4 py-3 text-sm font-semibold shadow-sm ` +
+                  (pathname === '/dashboard/my-listings'
+                    ? 'bg-[#651028] text-white'
+                    : 'border border-[#f1496b]/20 bg-white text-(--text)')
+                }
               >
                 My Listings
               </Link>
