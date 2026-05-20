@@ -50,19 +50,19 @@ const DashboardLayout = ({ children }) => {
           <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
             <aside className="flex flex-col gap-3">
               <Link
-                href="/requests"
+                href="/dashboard/my-requests"
                 className="rounded-full bg-[#651028] px-4 py-3 text-sm font-semibold text-white shadow-sm"
               >
                 My Requests
               </Link>
               <Link
-                href="/add-pet"
+                href="/dashboard/add-pet"
                 className="rounded-full border border-[#f1496b]/20 bg-white px-4 py-3 text-sm font-semibold text-(--text)"
               >
                 Add Pet
               </Link>
               <Link
-                href="/listings"
+                href="/dashboard/my-listings"
                 className="rounded-full border border-[#f1496b]/20 bg-white px-4 py-3 text-sm font-semibold text-(--text)"
               >
                 My Listings
