@@ -7,6 +7,7 @@ import { useSession } from '@/lib/auth-client'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { showErrorToast, showSuccessToast } from '@/lib/toast'
+import Spinner from '@/components/ui/Spinner'
 
 const PetDetailPage = () => {
 	const { detail } = useParams()
@@ -87,7 +88,9 @@ const PetDetailPage = () => {
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-white px-6 py-10">
-				<div className="mx-auto h-[520px] max-w-6xl rounded-3xl bg-black/90 animate-pulse" />
+				<div className="mx-auto flex h-[520px] max-w-6xl items-center justify-center rounded-3xl bg-white">
+					<Spinner size="lg" />
+				</div>
 			</div>
 		)
 	}

@@ -7,6 +7,7 @@ import { useSession } from '@/lib/auth-client'
 import { showErrorToast, showSuccessToast } from '@/lib/toast'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Spinner from '@/components/ui/Spinner'
 
 const Updatepage = () => {
   const { id } = useParams()
@@ -124,7 +125,9 @@ const Updatepage = () => {
         <h1 className="text-2xl mb-4 font-semibold text-[#651028] mb-1">Update your pet listing</h1>
 
         {loading ? (
-          <p className="text-sm text-gray-500">Loading pet details...</p>
+          <div className="flex min-h-[240px] items-center justify-center">
+            <Spinner size="lg" />
+          </div>
         ) : (
           <form className="space-y-8" onSubmit={handleSubmit}>
             <div>

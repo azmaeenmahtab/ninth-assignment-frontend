@@ -1,17 +1,13 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Spinner from '@/components/ui/Spinner'
 
 const LoadingCard = () => {
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 6 }).map((_, idx) => (
-        <div
-          key={idx}
-          className="h-[320px] rounded-2xl bg-black/90 animate-pulse"
-        />
-      ))}
+    <div className="flex min-h-[320px] items-center justify-center">
+      <Spinner size="lg" />
     </div>
   )
 }
@@ -98,9 +94,7 @@ const FeaturedSetion = () => {
       <div className="mx-auto max-w-6xl">
         
 
-        <Suspense fallback={<LoadingCard />}>
-          <FeaturedContent />
-        </Suspense>
+        <FeaturedContent />
       </div>
     </section>
     </div>

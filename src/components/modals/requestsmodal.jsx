@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
+import Spinner from '@/components/ui/Spinner'
 
 const RequestsModal = () => {
   const { isOpen, petId, petName, closeModal } = useRequestsModal()
@@ -75,7 +76,9 @@ const RequestsModal = () => {
 
         <div className="mt-4 max-h-[360px] space-y-3 overflow-y-auto pr-2">
           {loading && (
-            <div className="h-24 rounded-xl bg-black/10 animate-pulse" />
+            <div className="flex h-24 items-center justify-center">
+              <Spinner />
+            </div>
           )}
 
           {!loading && requests.length === 0 && (

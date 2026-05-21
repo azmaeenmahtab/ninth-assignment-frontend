@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useSession } from '@/lib/auth-client'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
 import { useDeleteConfirmModal } from '@/lib/contexts/deleteconfirmmodalcontext'
+import Spinner from '@/components/ui/Spinner'
 
 const MyListingsPage = () => {
   const { data: session } = useSession()
@@ -79,9 +80,9 @@ const MyListingsPage = () => {
 
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {loading && (
-            Array.from({ length: 3 }).map((_, idx) => (
-              <div key={idx} className="h-[320px] rounded-2xl bg-black/10 animate-pulse" />
-            ))
+            <div className="col-span-full flex min-h-[320px] items-center justify-center">
+              <Spinner size="lg" />
+            </div>
           )}
 
           {!loading && listings.map((pet) => {

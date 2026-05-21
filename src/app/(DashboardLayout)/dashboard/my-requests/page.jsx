@@ -3,10 +3,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSession } from "@/lib/auth-client"
 import Link from 'next/link'
+import Spinner from '@/components/ui/Spinner'
 
 const RequestsPage = () => {
   const { data: session } = useSession()
   const [requests, setRequests] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const userId = session?.user?.id
@@ -14,11 +16,14 @@ const RequestsPage = () => {
 
     const fetchRequests = async () => {
       try {
+        setLoading(true)
         const res = await fetch(`http://localhost:5000/my-adoption-requests?userId=${userId}`)
         const data = await res.json()
         setRequests(data?.requests || [])
       } catch (error) {
         setRequests([])
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -77,7 +82,13 @@ const RequestsPage = () => {
         </div>
       )}
  
-      {requests.length === 0 && (
+      {loading && (
+        <div className="mt-10 flex justify-center">
+          <Spinner size="lg" />
+        </div>
+      )}
+
+      {!loading && requests.length === 0 && (
         <div className="mt-10 flex justify-center">
           <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f3e8d5] text-2xl">🐾</div>
@@ -96,7 +107,7 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {requests.length > 0 && (
+      {!loading && requests.length > 0 && (
         <div className="mt-5 grid gap-6 sm:grid-cols-2">
           {requests.map((request) => {
             const status = (request?.status || 'pending').toLowerCase()
