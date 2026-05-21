@@ -95,7 +95,12 @@ const MyListingsPage = () => {
                       Requests
                     </button>
                     <button className="rounded-full border border-gray-200 px-3 py-2 text-[11px] font-semibold text-[#651028]">View</button>
-                    <button className="rounded-full bg-[#651028] px-3 py-2 text-[11px] font-semibold text-white">Edit</button>
+                    <Link
+                      href={`/dashboard/update-pet/${pet?._id}`}
+                      className="rounded-full bg-[#651028] px-3 py-2 text-center text-[11px] font-semibold text-white"
+                    >
+                      Edit
+                    </Link>
                     <button className="rounded-full border border-[#651028] px-3 py-2 text-[11px] font-semibold text-[#651028]">Delete</button>
                   </div>
                 </div>
