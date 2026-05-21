@@ -7,7 +7,9 @@ import Link from 'next/link'
 import mainLogo from '@/assets/mainlogo.png'
 import { useSession } from '@/lib/auth-client'
 import { RequestsModalProvider } from '@/lib/contexts/requestsmodalcontext'
+import { DeleteConfirmModalProvider } from '@/lib/contexts/deleteconfirmmodalcontext'
 import RequestsModal from '@/components/modals/requestsmodal'
+import DeleteConfirmModal from '@/components/modals/deleteconfirmmodal'
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession()
@@ -22,6 +24,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <RequestsModalProvider>
+    <DeleteConfirmModalProvider>
     <div className="min-h-screen bg-white text-(--text)">
       <header className="sticky top-0 z-40 w-full bg-white backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -97,7 +100,9 @@ const DashboardLayout = ({ children }) => {
         </section>
       </main>
       <RequestsModal />
+      <DeleteConfirmModal />
     </div>
+    </DeleteConfirmModalProvider>
     </RequestsModalProvider>
   )
 }

@@ -4,10 +4,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSession } from '@/lib/auth-client'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
+import { useDeleteConfirmModal } from '@/lib/contexts/deleteconfirmmodalcontext'
 
 const MyListingsPage = () => {
   const { data: session } = useSession()
   const { openModal } = useRequestsModal()
+  const { openDeleteModal } = useDeleteConfirmModal()
   const [listings, setListings] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -37,6 +39,25 @@ const MyListingsPage = () => {
     const available = total - adopted - pending
     return { total, available, adopted, pending }
   }, [listings])
+
+  const handleDelete = (pet) => {
+    if (!pet?._id) return
+    openDeleteModal({
+      title: 'Delete listing',
+      message: `Are you sure you want to delete ${pet?.petName || 'this listing'}? This action cannot be undone.`,
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      onConfirm: async () => {
+        const res = await fetch(`http://localhost:5000/delete-listing?petId=${pet._id}`, {
+          method: 'DELETE'
+        })
+        if (!res.ok) {
+          return
+        }
+        setListings((prev) => prev.filter((item) => item?._id !== pet._id))
+      }
+    })
+  }
 
   return (
     <div className="min-h-screen bg-[#f3e8d5] px-6 py-8">
@@ -101,7 +122,13 @@ const MyListingsPage = () => {
                     >
                       Edit
                     </Link>
-                    <button className="rounded-full border border-[#651028] px-3 py-2 text-[11px] font-semibold text-[#651028]">Delete</button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(pet)}
+                      className="rounded-full border border-[#651028] px-3 py-2 text-[11px] font-semibold text-[#651028]"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
