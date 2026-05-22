@@ -102,16 +102,17 @@ const Updatepage = () => {
       }
 
       const token = await authClient.token()
-      if (!token) {
+      const tokenValue = token?.data?.token || ''
+      if (!tokenValue) {
         console.warn('auth token missing')
       }
-      console.log('auth token:', token)
+      console.log('auth token:', tokenValue)
 
       const res = await fetch(`http://localhost:5000/update-pet?petId=${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${token || ''}`
+          authorization: `Bearer ${tokenValue}`
         },
         body: JSON.stringify(payload)
       })

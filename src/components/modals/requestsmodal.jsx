@@ -17,13 +17,14 @@ const RequestsModal = () => {
       try {
         setLoading(true)
         const token = await authClient.token()
-        if (!token) {
+        const tokenValue = token?.data?.token || ''
+        if (!tokenValue) {
           console.warn('auth token missing')
         }
-        console.log('auth token:', token)
+        console.log('auth token:', tokenValue)
         const res = await fetch(`http://localhost:5000/pet-adoption-requests?petId=${petId}`, {
           headers: {
-            authorization: `Bearer ${token || ''}`
+            authorization: `Bearer ${tokenValue}`
           }
         })
         const data = await res.json()
@@ -48,15 +49,16 @@ const RequestsModal = () => {
   const handleApprove = async (request) => {
     try {
       const token = await authClient.token()
-      if (!token) {
+      const tokenValue = token?.data?.token || ''
+      if (!tokenValue) {
         console.warn('auth token missing')
       }
-      console.log('auth token:', token)
+      console.log('auth token:', tokenValue)
       const res = await fetch('http://localhost:5000/approve-adoption-request', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          authorization: `Bearer ${token || ''}`
+          authorization: `Bearer ${tokenValue}`
         },
         body: JSON.stringify({ petId: request?.petId, userId: request?.userId })
       })

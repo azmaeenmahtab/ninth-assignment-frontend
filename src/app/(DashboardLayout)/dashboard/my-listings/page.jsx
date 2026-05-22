@@ -22,14 +22,15 @@ const MyListingsPage = () => {
     const loadListings = async () => {
       try {
         const token = await authClient.token()
-        if (!token) {
+        const tokenValue = token?.data?.token || ''
+        if (!tokenValue) {
           console.warn('auth token missing')
         }
-        console.log('auth token:', token)
+        console.log('auth token:', tokenValue)
         const res = await fetch(`http://localhost:5000/get-listing?userId=${userId}`, {
           headers: {
             'Content-Type': 'application/json',
-            authorization: `Bearer ${token || ''}`
+            authorization: `Bearer ${tokenValue}`
           }
         })
         const data = await res.json()
@@ -61,14 +62,16 @@ const MyListingsPage = () => {
       cancelLabel: 'Cancel',
       onConfirm: async () => {
         const token = await authClient.token()
-        if (!token) {
+        const tokenValue = token?.data?.token || ''
+        if (!tokenValue) {
           console.warn('auth token missing')
         }
-        console.log('auth token:', token)
+        console.log('auth token:', tokenValue)
         const res = await fetch(`http://localhost:5000/delete-listing?petId=${pet._id}`, {
           method: 'DELETE',
           headers: {
-            authorization: `Bearer ${token || ''}`
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${tokenValue}`
           }
         })
         if (!res.ok) {

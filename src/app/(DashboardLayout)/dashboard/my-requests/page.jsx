@@ -19,13 +19,14 @@ const RequestsPage = () => {
       try {
         setLoading(true)
         const token = await authClient.token()
-        if (!token) {
+        const tokenValue = token?.data?.token || ''
+        if (!tokenValue) {
           console.warn('auth token missing')
         }
-        console.log('auth token:', token)
+        console.log('auth token:', tokenValue)
         const res = await fetch(`http://localhost:5000/my-adoption-requests?userId=${userId}`, {
           headers: {
-            authorization: `Bearer ${token || ''}`
+            authorization: `Bearer ${tokenValue}`
           }
         })
         const data = await res.json()
@@ -46,14 +47,15 @@ const RequestsPage = () => {
 
     try {
       const token = await authClient.token()
-      if (!token) {
+      const tokenValue = token?.data?.token || ''
+      if (!tokenValue) {
         console.warn('auth token missing')
       }
-      console.log('auth token:', token)
+      console.log('auth token:', tokenValue)
       const res = await fetch(`http://localhost:5000/request-adoption?petId=${petId}&userId=${userId}`, {
         method: 'DELETE',
         headers: {
-          authorization: `Bearer ${token || ''}`
+          authorization: `Bearer ${tokenValue}`
         }
       })
       if (res.ok) {
