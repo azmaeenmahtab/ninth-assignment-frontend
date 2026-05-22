@@ -140,10 +140,13 @@ const DashboardLayout = ({ children }) => {
               {children}
             </div>
 
-            <Footer />
+            
           </div>
+          
         </section>
+        
       </main>
+      <Footer />
       <RequestsModal />
       <DeleteConfirmModal />
     </div>

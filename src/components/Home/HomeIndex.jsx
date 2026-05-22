@@ -15,7 +15,6 @@ const HomeIndex = () => {
       <BannerIndex />
       <div className="bg-[#f3e8d5] px-6 py-10 max-w-7xl mx-auto rounded-2xl">
       <FeaturedSetion />
-
       <AdoptionProcess />
       <AdoptionMatters />
       <SuccessStory />

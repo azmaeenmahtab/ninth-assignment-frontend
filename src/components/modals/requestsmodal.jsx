@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
 import Spinner from '@/components/ui/Spinner'
 import { authClient } from '@/lib/auth-client'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { showErrorToast, showSuccessToast } from '@/lib/toast'
+
 
 const RequestsModal = () => {
   const { isOpen, petId, petName, closeModal } = useRequestsModal()
@@ -68,9 +72,15 @@ const RequestsModal = () => {
             ? { ...item, status: 'approved' }
             : item
         )))
+        showSuccessToast('Adoption request approved successfully!')
+      }
+
+      if(!res.ok) {
+        const data = await res.json()
+        showErrorToast(data?.message)
       }
     } catch (error) {
-      // no-op for now
+      showErrorToast('Failed to approve request.')
     }
   }
 
@@ -159,6 +169,8 @@ const RequestsModal = () => {
           })}
         </div>
       </div>
+          <ToastContainer />
+      
     </div>
   )
 }
