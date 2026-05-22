@@ -7,9 +7,11 @@ import signupBanner from '@/assets/signuppagebanner.png'
 import googleIcon from '@/assets/google.png'
 import logo from '@/assets/mainlogo.png'
 import { authClient } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
 
 
 const SignupIndex = () => {
+  const router = useRouter()
   const formRef = useRef(null)
   const [formError, setFormError] = useState('')
 
@@ -53,7 +55,8 @@ const SignupIndex = () => {
         console.log(error)
         return
       }
-
+      await  authClient.getSession();
+      router.push('/home')
       console.log(data)
     } catch (err) {
       setFormError('Sign up failed. Please try again.')
