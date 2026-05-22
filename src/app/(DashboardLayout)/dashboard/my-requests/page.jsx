@@ -24,7 +24,7 @@ const RequestsPage = () => {
           console.warn('auth token missing')
         }
         console.log('auth token:', tokenValue)
-        const res = await fetch(`http://localhost:5000/my-adoption-requests?userId=${userId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/my-adoption-requests?userId=${userId}`, {
           headers: {
             authorization: `Bearer ${tokenValue}`
           }
@@ -52,7 +52,7 @@ const RequestsPage = () => {
         console.warn('auth token missing')
       }
       console.log('auth token:', tokenValue)
-      const res = await fetch(`http://localhost:5000/request-adoption?petId=${petId}&userId=${userId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/request-adoption?petId=${petId}&userId=${userId}`, {
         method: 'DELETE',
         headers: {
           authorization: `Bearer ${tokenValue}`

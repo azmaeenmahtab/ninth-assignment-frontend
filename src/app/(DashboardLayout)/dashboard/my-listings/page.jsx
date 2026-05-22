@@ -27,7 +27,7 @@ const MyListingsPage = () => {
           console.warn('auth token missing')
         }
         console.log('auth token:', tokenValue)
-        const res = await fetch(`http://localhost:5000/get-listing?userId=${userId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-listing?userId=${userId}`, {
           headers: {
             'Content-Type': 'application/json',
             authorization: `Bearer ${tokenValue}`
@@ -67,7 +67,7 @@ const MyListingsPage = () => {
           console.log('auth token missing')
         }
         console.log('auth token:', tokenValue)
-        const res = await fetch(`http://localhost:5000/delete-listing?petId=${pet._id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete-listing?petId=${pet._id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

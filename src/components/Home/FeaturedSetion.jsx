@@ -19,7 +19,7 @@ const FeaturedContent = () => {
   useEffect(() => {
     const loadPets = async () => {
       try {
-        const res = await fetch('http://localhost:5000/all-pets')
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all-pets`)
         const data = await res.json()
         setPets((data?.pets || []).slice(0, 6))
       } catch (error) {

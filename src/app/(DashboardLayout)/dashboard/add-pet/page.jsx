@@ -33,7 +33,7 @@ const AddPet = () => {
         console.warn('auth token missing');
       }
       console.log('auth token:', tokenValue);
-      const res = await fetch('http://localhost:5000/add-pet', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-pet`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -33,8 +33,8 @@ const Allpetpage = () => {
     }
 
     const url = params.toString()
-      ? `http://localhost:5000/all-pets?${params.toString()}`
-      : 'http://localhost:5000/all-pets'
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/all-pets?${params.toString()}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}/all-pets`
 
     try {
       setHasError(false)

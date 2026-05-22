@@ -26,7 +26,7 @@ const RequestsModal = () => {
           console.warn('auth token missing')
         }
         console.log('auth token:', tokenValue)
-        const res = await fetch(`http://localhost:5000/pet-adoption-requests?petId=${petId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pet-adoption-requests?petId=${petId}`, {
           headers: {
             authorization: `Bearer ${tokenValue}`
           }
@@ -58,7 +58,7 @@ const RequestsModal = () => {
         console.warn('auth token missing')
       }
       console.log('auth token:', tokenValue)
-      const res = await fetch('http://localhost:5000/approve-adoption-request', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/approve-adoption-request`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

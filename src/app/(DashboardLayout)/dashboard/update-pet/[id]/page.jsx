@@ -39,7 +39,7 @@ const Updatepage = () => {
 
     const loadPet = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/pet-detail?petId=${id}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pet-detail?petId=${id}`)
         const data = await res.json()
         if (!res.ok) {
           throw new Error(data?.message || 'Failed to fetch pet details')
@@ -108,7 +108,7 @@ const Updatepage = () => {
       }
       console.log('auth token:', tokenValue)
 
-      const res = await fetch(`http://localhost:5000/update-pet?petId=${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/update-pet?petId=${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

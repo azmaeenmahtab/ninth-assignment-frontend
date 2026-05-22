@@ -24,7 +24,7 @@ const PetDetailPage = () => {
 
 		const loadPet = async () => {
 			try {
-				const res = await fetch(`http://localhost:5000/pet-detail?petId=${detail}`)
+				const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pet-detail?petId=${detail}`)
 				const data = await res.json()
 				setPet(data?.pet || null)
 			} catch (error) {
@@ -74,7 +74,7 @@ const PetDetailPage = () => {
 				console.warn('auth token missing')
 			}
 			console.log('auth token:', tokenValue)
-			const res = await fetch('http://localhost:5000/request-adoption', {
+			const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/request-adoption`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
