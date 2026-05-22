@@ -8,6 +8,7 @@ import { showErrorToast, showSuccessToast } from '@/lib/toast'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Spinner from '@/components/ui/Spinner'
+import { authClient } from '@/lib/auth-client'
 
 const Updatepage = () => {
   const { id } = useParams()
@@ -100,9 +101,18 @@ const Updatepage = () => {
         ownerEmail: ownerEmailValue
       }
 
+      const token = await authClient.token()
+      if (!token) {
+        console.warn('auth token missing')
+      }
+      console.log('auth token:', token)
+
       const res = await fetch(`http://localhost:5000/update-pet?petId=${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token || ''}`
+        },
         body: JSON.stringify(payload)
       })
       const data = await res.json().catch(() => ({}))

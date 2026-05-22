@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useSession } from "@/lib/auth-client"
 import Link from 'next/link'
 import Spinner from '@/components/ui/Spinner'
+import { authClient } from '@/lib/auth-client'
 
 const RequestsPage = () => {
   const { data: session } = useSession()
@@ -17,7 +18,16 @@ const RequestsPage = () => {
     const fetchRequests = async () => {
       try {
         setLoading(true)
-        const res = await fetch(`http://localhost:5000/my-adoption-requests?userId=${userId}`)
+        const token = await authClient.token()
+        if (!token) {
+          console.warn('auth token missing')
+        }
+        console.log('auth token:', token)
+        const res = await fetch(`http://localhost:5000/my-adoption-requests?userId=${userId}`, {
+          headers: {
+            authorization: `Bearer ${token || ''}`
+          }
+        })
         const data = await res.json()
         setRequests(data?.requests || [])
       } catch (error) {
@@ -35,8 +45,16 @@ const RequestsPage = () => {
     if (!userId || !petId) return
 
     try {
+      const token = await authClient.token()
+      if (!token) {
+        console.warn('auth token missing')
+      }
+      console.log('auth token:', token)
       const res = await fetch(`http://localhost:5000/request-adoption?petId=${petId}&userId=${userId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          authorization: `Bearer ${token || ''}`
+        }
       })
       if (res.ok) {
         setRequests((prev) => prev.filter((req) => req.petId !== petId))
@@ -141,7 +159,7 @@ const RequestsPage = () => {
 
                 <div className="mt-4 flex flex-wrap gap-3">
                   <Link
-                    href={`/home/${request?.petId}`}
+                    href={`/home/detail/${request?.petId}`}
                     className="rounded-full bg-[#651028] px-4 py-2 text-[11px] font-semibold text-white"
                   >
                     View Details

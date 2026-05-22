@@ -6,6 +6,7 @@ import { useSession } from '@/lib/auth-client'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
 import { useDeleteConfirmModal } from '@/lib/contexts/deleteconfirmmodalcontext'
 import Spinner from '@/components/ui/Spinner'
+import { authClient } from '@/lib/auth-client'
 
 const MyListingsPage = () => {
   const { data: session } = useSession()
@@ -20,7 +21,17 @@ const MyListingsPage = () => {
 
     const loadListings = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/get-listing?userId=${userId}`)
+        const token = await authClient.token()
+        if (!token) {
+          console.warn('auth token missing')
+        }
+        console.log('auth token:', token)
+        const res = await fetch(`http://localhost:5000/get-listing?userId=${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token || ''}`
+          }
+        })
         const data = await res.json()
         setListings(data?.listings || [])
       } catch (error) {
@@ -49,8 +60,16 @@ const MyListingsPage = () => {
       confirmLabel: 'Delete',
       cancelLabel: 'Cancel',
       onConfirm: async () => {
+        const token = await authClient.token()
+        if (!token) {
+          console.warn('auth token missing')
+        }
+        console.log('auth token:', token)
         const res = await fetch(`http://localhost:5000/delete-listing?petId=${pet._id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            authorization: `Bearer ${token || ''}`
+          }
         })
         if (!res.ok) {
           return
@@ -116,7 +135,12 @@ const MyListingsPage = () => {
                     >
                       Requests
                     </button>
-                    <button className="rounded-full border border-gray-200 px-3 py-2 text-[11px] font-semibold text-[#651028]">View</button>
+                    <Link
+                      href={`/home/detail/${pet?._id}`}
+                      className="rounded-full border border-gray-200 px-3 py-2 text-center text-[11px] font-semibold text-[#651028]"
+                    >
+                      View
+                    </Link>
                     <Link
                       href={`/dashboard/update-pet/${pet?._id}`}
                       className="rounded-full bg-[#651028] px-3 py-2 text-center text-[11px] font-semibold text-white"

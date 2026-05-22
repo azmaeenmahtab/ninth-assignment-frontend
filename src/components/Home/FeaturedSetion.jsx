@@ -68,7 +68,7 @@ const FeaturedContent = () => {
               </span>
             </div>
             <Link
-              href={`/home/${pet?._id}`}
+              href={`/home/detail/${pet?._id}`}
               className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#651028] py-2 text-xs font-semibold text-white"
             >
               Details

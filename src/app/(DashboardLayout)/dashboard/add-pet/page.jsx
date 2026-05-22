@@ -3,13 +3,20 @@
 import React from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { showErrorToast, showSuccessToast } from '@/lib/toast';
+import { authClient } from '@/lib/auth-client';
 
 const AddPet = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('add pet submit clicked');
     console.log("user session:", session);
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
@@ -20,20 +27,29 @@ const AddPet = () => {
     console.log("form data to submit:", data);
 
     try {
+      const token = await authClient.token();
+      if (!token) {
+        console.warn('auth token missing');
+      }
+      console.log('auth token:', token);
       const res = await fetch('http://localhost:5000/add-pet', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token || ''}`
+        },
         body: JSON.stringify(data),
       });
       if (res.ok) {
         // Optionally redirect or show success
+        showSuccessToast('Pet added successfully.');
         router.push('/dashboard/my-listings');
       } else {
         // Optionally handle error
-        alert('Failed to add pet.');
+        showErrorToast('Failed to add pet.');
       }
     } catch (err) {
-      alert('Error submitting form.');
+      showErrorToast('Error submitting form.');
     }
   };
 
@@ -132,6 +148,7 @@ const AddPet = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

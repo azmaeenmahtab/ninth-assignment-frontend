@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRequestsModal } from '@/lib/contexts/requestsmodalcontext'
 import Spinner from '@/components/ui/Spinner'
+import { authClient } from '@/lib/auth-client'
 
 const RequestsModal = () => {
   const { isOpen, petId, petName, closeModal } = useRequestsModal()
@@ -15,7 +16,16 @@ const RequestsModal = () => {
     const loadRequests = async () => {
       try {
         setLoading(true)
-        const res = await fetch(`http://localhost:5000/pet-adoption-requests?petId=${petId}`)
+        const token = await authClient.token()
+        if (!token) {
+          console.warn('auth token missing')
+        }
+        console.log('auth token:', token)
+        const res = await fetch(`http://localhost:5000/pet-adoption-requests?petId=${petId}`, {
+          headers: {
+            authorization: `Bearer ${token || ''}`
+          }
+        })
         const data = await res.json()
         setRequests(data?.requests || [])
       } catch (error) {
@@ -37,9 +47,17 @@ const RequestsModal = () => {
 
   const handleApprove = async (request) => {
     try {
+      const token = await authClient.token()
+      if (!token) {
+        console.warn('auth token missing')
+      }
+      console.log('auth token:', token)
       const res = await fetch('http://localhost:5000/approve-adoption-request', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token || ''}`
+        },
         body: JSON.stringify({ petId: request?.petId, userId: request?.userId })
       })
       if (res.ok) {

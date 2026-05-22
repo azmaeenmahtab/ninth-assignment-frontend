@@ -2,12 +2,14 @@
 "use client";
 
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from '@/lib/auth-client'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { showErrorToast, showSuccessToast } from '@/lib/toast'
 import Spinner from '@/components/ui/Spinner'
+import { authClient } from '@/lib/auth-client'
 
 const PetDetailPage = () => {
 	const { detail } = useParams()
@@ -66,9 +68,17 @@ const PetDetailPage = () => {
 
 		try {
 			setSubmitting(true)
+			const token = await authClient.token()
+			if (!token) {
+				console.warn('auth token missing')
+			}
+			console.log('auth token:', token)
 			const res = await fetch('http://localhost:5000/request-adoption', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					authorization: `Bearer ${token || ''}`
+				},
 				body: JSON.stringify(payload)
 			})
 			const data = await res.json()
@@ -90,6 +100,26 @@ const PetDetailPage = () => {
 			<div className="min-h-screen bg-white px-6 py-10">
 				<div className="mx-auto flex h-[520px] max-w-6xl items-center justify-center rounded-3xl bg-white">
 					<Spinner size="lg" />
+				</div>
+			</div>
+		)
+	}
+
+	if (!pet) {
+		return (
+			<div className="min-h-screen bg-[#f2e4d1] px-6 py-10">
+				<div className="mx-auto max-w-3xl rounded-3xl bg-white px-6 py-12 text-center shadow-sm">
+					<div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#f7e6e9] text-2xl">🐾</div>
+					<h1 className="mt-6 text-2xl font-semibold text-[#651028]">Pet not found</h1>
+					<p className="mt-3 text-sm text-gray-600">
+						This pet listing might have been removed or is no longer available.
+					</p>
+					<Link
+						href="/dashboard/my-listings"
+						className="mt-6 inline-flex rounded-full bg-[#651028] px-6 py-2 text-sm font-semibold text-white"
+					>
+						Back to My Listings
+					</Link>
 				</div>
 			</div>
 		)
