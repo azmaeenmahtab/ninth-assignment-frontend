@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import mainLogo from '@/assets/mainlogo.png'
@@ -10,6 +10,7 @@ import { RequestsModalProvider } from '@/lib/contexts/requestsmodalcontext'
 import { DeleteConfirmModalProvider } from '@/lib/contexts/deleteconfirmmodalcontext'
 import RequestsModal from '@/components/modals/requestsmodal'
 import DeleteConfirmModal from '@/components/modals/deleteconfirmmodal'
+import Footer from '@/components/footer'
 
 const DashboardLayout = ({ children }) => {
   const { data: session } = useSession()
@@ -22,6 +23,7 @@ const DashboardLayout = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <RequestsModalProvider>
@@ -84,6 +86,7 @@ const DashboardLayout = ({ children }) => {
                   onClick={async () => {
                     setMenuOpen(false)
                     await signOut()
+                    router.push('/auth/login')
                   }}
                 >
                   Logout
@@ -136,6 +139,8 @@ const DashboardLayout = ({ children }) => {
             <div className="min-h-screen">
               {children}
             </div>
+
+            <Footer />
           </div>
         </section>
       </main>

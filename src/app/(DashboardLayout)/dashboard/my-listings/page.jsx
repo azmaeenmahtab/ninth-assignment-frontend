@@ -64,7 +64,7 @@ const MyListingsPage = () => {
         const token = await authClient.token()
         const tokenValue = token?.data?.token || ''
         if (!tokenValue) {
-          console.warn('auth token missing')
+          console.log('auth token missing')
         }
         console.log('auth token:', tokenValue)
         const res = await fetch(`http://localhost:5000/delete-listing?petId=${pet._id}`, {

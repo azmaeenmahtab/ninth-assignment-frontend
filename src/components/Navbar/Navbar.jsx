@@ -3,11 +3,13 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import mainLogo from '@/assets/mainlogo.png'
 import { signOut, useSession } from '@/lib/auth-client'
 
 const Navbar = () => {
   const { data: session } = useSession()
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const userName = session?.user?.name || 'User'
   const userImage = session?.user?.image
@@ -24,7 +26,7 @@ const Navbar = () => {
           <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/home">
             Home
           </Link>
-          <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/pets">
+          <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/all-pets">
             All Pets
           </Link>
           {/* <Link className="text-sm font-semibold text-(--text) hover:text-(--text)" href="/requests">
@@ -92,6 +94,7 @@ const Navbar = () => {
                   onClick={async () => {
                     setMenuOpen(false)
                     await signOut()
+                    router.push('/auth/login')
                   }}
                 >
                   Logout

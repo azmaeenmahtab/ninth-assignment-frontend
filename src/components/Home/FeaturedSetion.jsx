@@ -37,7 +37,7 @@ const FeaturedContent = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
       {pets.map((pet) => (
         <div key={pet?._id} className="rounded-2xl bg-white shadow-sm">
           <div className="h-48 w-full overflow-hidden rounded-t-2xl">
@@ -53,7 +53,7 @@ const FeaturedContent = () => {
                 {pet?.petName || 'Unnamed'}
               </h3>
               <span className="text-sm font-semibold text-[#651028]">
-                Fee: ${pet?.adoptionFee || '0'}
+                Adoption Fee: ${pet?.adoptionFee || '0'}
               </span>
             </div>
             <p className="mt-1 text-xs text-gray-500">
@@ -82,7 +82,7 @@ const FeaturedContent = () => {
 
 const FeaturedSetion = () => {
   return (
-    <div>
+    <div className='bg-[#f3e8d5] py-10 max-w-7xl mx-auto rounded-2xl'>
 
     <div className="mb-8 text-center">
           <h2 className="text-3xl font-semibold text-[#651028]">Featured Pets</h2>
@@ -90,7 +90,7 @@ const FeaturedSetion = () => {
             Find your next best friend from our handpicked listings.
           </p>
         </div>
-    <section className="bg-[#f3e8d5] px-6 py-10 max-w-7xl mx-auto rounded-2xl">
+    <section className="bg-[#f3e8d5] py-10 max-w-7xl mx-auto rounded-2xl">
       <div className="mx-auto max-w-6xl">
         
 
