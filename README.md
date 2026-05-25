@@ -1,14 +1,11 @@
-# 🐾 Pet Adoption Platform
+# 🐾 Pet Adoption Platform - PawPals
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-4ade80?style=for-the-badge&logo=vercel)](https://ninth-assignment-frontend-wjnb.vercel.app/)
 
 ---
 ## 📸 Project Screenshot
 
-<p align="center">
-  <!-- Replace the path below with your screenshot path. Add your screenshot to 'frontend/public/screenshot.png' -->
-  <img src="frontend/public/image.png" alt="Project Screenshot" width="600"/>
-</p>
+![Pawpals Preview](https://github.com/azmaeenmahtab/ninth-assignment-frontend/blob/main/public/image.png)---
 
 ---
 
