@@ -7,7 +7,7 @@
 
 <p align="center">
   <!-- Replace the path below with your screenshot path. Add your screenshot to 'frontend/public/screenshot.png' -->
-  <img src="frontend/public/screenshot.png" alt="Project Screenshot" width="600"/>
+  <img src="frontend/public/image.png" alt="Project Screenshot" width="600"/>
 </p>
 
 ---
